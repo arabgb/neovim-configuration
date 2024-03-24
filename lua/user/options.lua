@@ -51,3 +51,7 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- configure arabic
+vim.opt.encoding = 'utf-8'
+vim.opt.arabicshape = true
