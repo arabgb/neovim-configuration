@@ -35,9 +35,11 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- setup for nvim-trer
-vim.keymap.set('n', '<C-j>tt',':NvimTreeToggle<CR>')
+vim.keymap.set('n', '<leader>tt',':NvimTreeToggle<CR>')
 
 -- custom key
 -- exit from nvim
 vim.keymap.set('n', '<C-j>e',':exit<CR>')
 
+-- go to next file
+vim.keymap.set('n', '<leader>n',':bnext<CR>')
