@@ -55,3 +55,4 @@ vim.opt.scrolloff = 10
 -- configure arabic
 vim.opt.encoding = 'utf-8'
 vim.opt.arabicshape = true
+vim.opt.termbidi = true
