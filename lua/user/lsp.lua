@@ -1,2 +1,2 @@
-require('lsp-zero')
-require('lspconfig').intelephense.setup({})
+-- local lsp_zero = require('lsp-zero')
+-- require('lspconfig').intelephense.setup({})
