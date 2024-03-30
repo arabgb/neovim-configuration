@@ -1,6 +1,6 @@
 return {
-  {
-    "drewtempelmeyer/palenight.vim",
-    lazy = true,
-  }
+	{
+		"drewtempelmeyer/palenight.vim",
+		lazy = true,
+	},
 }
