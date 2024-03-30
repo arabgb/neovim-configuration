@@ -32,3 +32,12 @@ vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>")
 -- custom key
 -- go to next file
 vim.keymap.set("n", "<leader>n", ":bnext<CR>")
+
+-- todo
+vim.keymap.set("n", "[t", function()
+	require("todo-comments").jump_next()
+end, { desc = "Next todo comment" })
+
+vim.keymap.set("n", "]t", function()
+	require("todo-comments").jump_prev()
+end, { desc = "Previous todo comment" })
