@@ -32,7 +32,8 @@ vim.keymap.set("n", "<leader>sk", ":Telescope keymaps<CR>", { desc = "Search in 
 
 -- custom key
 -- go to next file
-vim.keymap.set("n", "<leader>n", ":bnext<CR>")
+vim.keymap.set("n", "<leader>b]", ":bnext<CR>")
+vim.keymap.set("n", "<leader>b[", ":bprevious<CR>")
 
 -- todo
 vim.keymap.set("n", "[t", function()
