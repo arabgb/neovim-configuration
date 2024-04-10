@@ -6,7 +6,14 @@ conform.setup({
 		python = { "isort", "black" },
 		-- Use a sub-list to run only the first available formatter
 		javascript = { { "prettierd", "prettier" } },
-		html = {},
+		typescript = { { "prettierd", "prettier" } },
+		scss = { { "prettierd", "prettier" } },
+		less = { { "prettierd", "prettier" } },
+		html = { { "prettierd", "prettier" } },
+		json = { { "prettierd", "prettier" } },
+		vue = { { "prettierd", "prettier" } },
+		bash = { "shfmt" },
+		sh = { "shfmt" },
 	},
 	format_on_save = {
 		-- These options will be passed to conform.format()
