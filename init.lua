@@ -10,6 +10,7 @@ require("user.telescope")
 require("user.treesitter")
 require("user.lsp")
 require("user.comment")
-require("user.conform")
+-- require("user.conform")
+-- require("user.vim-prettier")
 require("user.nvim-cmp")
 -- TODO: I LOVE NVIM

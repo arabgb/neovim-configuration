@@ -1,6 +1,7 @@
 return {
 	"numToStr/Comment.nvim",
-	opts = {},
+	opts = {
+	},
 }
 
 -- `gcc` - Toggles the current line using linewise comment

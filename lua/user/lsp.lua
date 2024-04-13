@@ -87,8 +87,8 @@ local servers = {
 	-- But for many setups, the LSP (`tsserver`) will work just fine
 	tsserver = {},
 	angularls = {},
-	--
-
+	html = {},
+	cssls = {},
 	lua_ls = {
 		-- cmd = {...},
 		-- filetypes = { ...},
