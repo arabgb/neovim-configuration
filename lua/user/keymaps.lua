@@ -32,8 +32,13 @@ vim.keymap.set("n", "<leader>sk", ":Telescope keymaps<CR>", { desc = "Search in 
 
 -- custom key
 -- go to next file
-vim.keymap.set("n", "<leader>b]", ":bnext<CR>")
-vim.keymap.set("n", "<leader>b[", ":bprevious<CR>")
+vim.keymap.set("n", "<leader>b]", ":bnext<CR>", { desc = "Go to the next buffer" })
+vim.keymap.set("n", "<leader>b[", ":bprevious<CR>", { desc = "Go to the previous buffer" })
+
+-- window commands
+--  open virtual window, horizantal window
+vim.keymap.set("n", "<leader>w-", ":split<CR>", { desc = "splite the windows horizantal" })
+vim.keymap.set("n", "<leader>w|", ":vsplit<CR>", { desc = "split the window virtual" })
 
 --- comment/uncomment code
 -- vim.keymap.set("n", "<C-_>", "gcc", { desc = "Comment/Uncomment line or block" })
