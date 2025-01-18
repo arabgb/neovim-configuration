@@ -89,6 +89,7 @@ local servers = {
 	angularls = {},
 	html = {},
 	cssls = {},
+	jinja_lsp = {},
 	lua_ls = {
 		-- cmd = {...},
 		-- filetypes = { ...},

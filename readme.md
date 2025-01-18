@@ -10,3 +10,5 @@ https://github.com/BurntSushi/ripgrep#installation
 # Telescope is require fd find, for more information 
 https://github.com/sharkdp/fd?tab=readme-ov-file#installation
 
+# jinja_lsp require cargo to work
+sudo dnf install cargo # in fedora!
