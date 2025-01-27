@@ -90,7 +90,7 @@ local servers = {
 	html = {},
 	cssls = {},
 	jinja_lsp = {
-		filetypes = {'jinja', 'j2', 'jinja2'}
+		filetypes = { "jinja", "j2", "jinja2", "html" },
 	},
 
 	lua_ls = {
