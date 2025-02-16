@@ -1,3 +1,4 @@
+local lspconfig = require("lspconfig")
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 	callback = function(event)
@@ -109,12 +110,14 @@ local servers = {
 	-- But for many setups, the LSP (`tsserver`) will work just fine
 	ts_ls = {},
 	angularls = {},
-	html = {},
+	html = {
+		filetypes = { "html", "htmldjango" },
+	},
 	cssls = {},
 	eslint = {},
 	jsonls = {},
 	jinja_lsp = {
-		filetypes = { "jinja", "j2", "jinja2", "html" },
+		filetypes = { "jinja", "j2", "jinja2" },
 	},
 
 	lua_ls = {
@@ -136,6 +139,8 @@ require("mason").setup()
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
+	"html",
+	"ts_ls",
 })
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -147,7 +152,10 @@ require("mason-lspconfig").setup({
 			-- by the server configuration above. Useful when disabling
 			-- certain features of an LSP (for example, turning off formatting for ts_ls)
 			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-			require("lspconfig")[server_name].setup(server)
+			lspconfig[server_name].setup(server)
 		end,
 	},
+})
+lspconfig["html"].setup({
+	capabilities = capabilities,
 })
