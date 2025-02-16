@@ -159,3 +159,6 @@ require("mason-lspconfig").setup({
 lspconfig["html"].setup({
 	capabilities = capabilities,
 })
+lspconfig["jinja_lsp"].setup({
+	capabilities = capabilities,
+})
