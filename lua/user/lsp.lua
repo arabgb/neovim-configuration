@@ -90,6 +90,8 @@ local servers = {
 	angularls = {},
 	html = {},
 	cssls = {},
+	eslint = {},
+	jsonls = {},
 	jinja_lsp = {
 		filetypes = { "jinja", "j2", "jinja2", "html" },
 	},
