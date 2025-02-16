@@ -1,0 +1,2 @@
+-- putting all global variable here
+--
