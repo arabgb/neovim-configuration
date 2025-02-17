@@ -162,3 +162,34 @@ lspconfig["html"].setup({
 lspconfig["jinja_lsp"].setup({
 	capabilities = capabilities,
 })
+
+-- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+-- 	pattern = "*.html",
+-- 	callback = function()
+-- 		vim.bo.filetype = "html"
+-- 	end,
+-- })
+-- -- Configure HTML LSP
+-- lspconfig.html.setup({
+-- 	on_attach = function(client, bufnr)
+-- 		-- Your on_attach configuration (e.g., keybindings)
+-- 	end,
+-- 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+-- })
+--
+-- -- Configure TypeScript/JavaScript LSP
+-- lspconfig.ts_ls.setup({
+-- 	on_attach = function(client, bufnr)
+-- 		-- Your on_attach configuration (e.g., keybindings)
+-- 	end,
+-- 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+-- 	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "html" }, -- Add "html" here
+-- 	init_options = {
+-- 		-- Enable tsserver for JavaScript inside <script> tags
+-- 		hostInfo = "neovim",
+-- 		preferences = {
+-- 			includeCompletionsForModuleExports = true,
+-- 			includeCompletionsWithInsertText = true,
+-- 		},
+-- 	},
+-- })
