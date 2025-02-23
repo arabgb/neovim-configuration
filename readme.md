@@ -1,3 +1,6 @@
+# To install this configuration:
+git clone https://github.com/arabgb/neovim-configuration "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
 # install nerd-font for nvim-web-divicons plugin:
 https://github.com/ryanoasis/nerd-fonts
 
