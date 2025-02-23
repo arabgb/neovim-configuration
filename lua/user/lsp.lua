@@ -92,34 +92,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
+      -- Diagnostic Config
+      -- See :help vim.diagnostic.Opts
+      vim.diagnostic.config {
+        severity_sort = true,
+        float = { border = 'rounded', source = 'if_many' },
+        underline = { severity = vim.diagnostic.severity.ERROR },
+        signs = vim.g.have_nerd_font and {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN] = '󰀪 ',
+            [vim.diagnostic.severity.INFO] = '󰋽 ',
+            [vim.diagnostic.severity.HINT] = '󰌶 ',
+          },
+        } or {},
+        virtual_text = {
+          source = 'if_many',
+          spacing = 2,
+          format = function(diagnostic)
+            local diagnostic_message = {
+              [vim.diagnostic.severity.ERROR] = diagnostic.message,
+              [vim.diagnostic.severity.WARN] = diagnostic.message,
+              [vim.diagnostic.severity.INFO] = diagnostic.message,
+              [vim.diagnostic.severity.HINT] = diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+          end,
+        },
+      }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 local servers = {
-	clangd = {},
+--	clangd = {},
 	cmake = {},
-	-- gopls = {},
-	pylsp = {},
-	-- rust_analyzer = {},
-	-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-	--
-	-- Some languages (like typescript) have entire language plugins that can be useful:
-	--    https://github.com/pmizio/typescript-tools.nvim
-	--
-	-- But for many setups, the LSP (`tsserver`) will work just fine
-	ts_ls = {},
-	angularls = {},
-	html = {
-		filetypes = { "html", "htmldjango" },
-	},
-	cssls = {},
-	eslint = {},
-	jsonls = {},
-	jinja_lsp = {
-		filetypes = { "jinja", "j2", "jinja2" },
-	},
-
 	lua_ls = {
 		-- cmd = {...},
 		-- filetypes = { ...},
@@ -130,21 +137,20 @@ local servers = {
 					callSnippet = "Replace",
 				},
 				-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-				diagnostics = { disable = { "missing-fields" } },
+				-- diagnostics = { disable = { "missing-fields" } },
 			},
 		},
 	},
 }
-require("mason").setup()
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
-	"html",
-	"ts_ls",
 })
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 require("mason-lspconfig").setup({
+  ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        automatic_installation = false,
 	handlers = {
 		function(server_name)
 			local server = servers[server_name] or {}
@@ -156,40 +162,4 @@ require("mason-lspconfig").setup({
 		end,
 	},
 })
-lspconfig["html"].setup({
-	capabilities = capabilities,
-})
-lspconfig["jinja_lsp"].setup({
-	capabilities = capabilities,
-})
 
--- vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
--- 	pattern = "*.html",
--- 	callback = function()
--- 		vim.bo.filetype = "html"
--- 	end,
--- })
--- -- Configure HTML LSP
--- lspconfig.html.setup({
--- 	on_attach = function(client, bufnr)
--- 		-- Your on_attach configuration (e.g., keybindings)
--- 	end,
--- 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
--- })
---
--- -- Configure TypeScript/JavaScript LSP
--- lspconfig.ts_ls.setup({
--- 	on_attach = function(client, bufnr)
--- 		-- Your on_attach configuration (e.g., keybindings)
--- 	end,
--- 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
--- 	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "html" }, -- Add "html" here
--- 	init_options = {
--- 		-- Enable tsserver for JavaScript inside <script> tags
--- 		hostInfo = "neovim",
--- 		preferences = {
--- 			includeCompletionsForModuleExports = true,
--- 			includeCompletionsWithInsertText = true,
--- 		},
--- 	},
--- })
