@@ -86,6 +86,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				group = highlight_augroup,
 				callback = vim.lsp.buf.clear_references,
 			})
+			vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+				pattern = "*.html",
+				callback = function()
+					vim.bo.filetype = "html"
+				end,
+			})
 
 			vim.api.nvim_create_autocmd("LspDetach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
@@ -137,6 +143,21 @@ vim.diagnostic.config({
 	},
 })
 
+local lspconfig = require("lspconfig")
+lspconfig.ts_ls.setup({
+	on_attach = on_attach, -- Use your existing on_attach function
+	filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "html" }, --Add html to the file types.
+	init_options = {
+		hostInfo = "nvim-lsp",
+		preferences = {
+			disableInferredTypeProjects = true,
+		},
+		-- This is the crucial part:
+		embeddedLanguages = {
+			html = "javascript", -- Tell ts-ls to treat JS in HTML <script> tags as JS
+		},
+	},
+})
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
@@ -152,14 +173,12 @@ local servers = {
 	--    https://github.com/pmizio/typescript-tools.nvim
 	--
 	-- But for many setups, the LSP (`tsserver`) will work just fine
+	-- ts_ls = {},
 	ts_ls = {},
-	angularls = {},
-	html = {},
-	cssls = {},
-	jinja_lsp = {
-		filetypes = { "jinja", "j2", "jinja2", "html" },
+	html = {
+		filetypes = { "html", "htmldjango" },
 	},
-
+	cssls = {},
 	lua_ls = {
 		-- cmd = {...},
 		-- filetypes = { ...},
@@ -175,7 +194,18 @@ local servers = {
 		},
 	},
 }
- require("mason").setup()
+
+-- Optional: Enable borders for LSP hover windows
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = "rounded",
+})
+
+-- Optional: Enable borders for signature help
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+	border = "rounded",
+})
+
+require("mason").setup()
 
 -- You can add other tools here that you want Mason to install
 -- for you, so that they are available from within Neovim.
