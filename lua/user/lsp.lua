@@ -1,4 +1,3 @@
-local lspconfig = require("lspconfig")
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 	callback = function(event)
@@ -7,10 +6,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--
 		-- In this case, we create a function that lets us more easily define mappings specific
 		-- for LSP related items. It sets the mode, buffer and description for us each time.
-		local map = function(keys, func, desc, mode)
+		local map = function(keys, func, desc)
 			mode = mode or "n"
 			vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 		end
+
 		-- Jump to the definition of the word under your cursor.
 		--  This is where a variable was first declared, or where a function is defined, etc.
 		--  To jump back, press <C-t>.
@@ -51,6 +51,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- WARN: This is not Goto Definition, this is Goto Declaration.
 		--  For example, in C this would take you to the header.
 		map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+		-- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
+		---@param client vim.lsp.Client
+		---@param method vim.lsp.protocol.Method
+		---@param bufnr? integer some lsp support methods only in specific files
+		---@return boolean
+		local function client_supports_method(client, method, bufnr)
+			if vim.fn.has("nvim-0.11") == 1 then
+				return client:supports_method(method, bufnr)
+			else
+				return client.supports_method(method, { bufnr = bufnr })
+			end
+		end
 
 		-- The following two autocommands are used to highlight references of the
 		-- word under your cursor when your cursor rests there for a little while.
@@ -58,7 +70,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		--
 		-- When you move your cursor, the highlights will be cleared (the second autocommand).
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
-		if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+		if
+			client
+			and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
+		then
 			local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = event.buf,
@@ -85,48 +100,66 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- code, if the language server you are using supports them
 		--
 		-- This may be unwanted, since they displace some of your code
-		if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+		if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
 			map("<leader>th", function()
 				vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
 			end, "[T]oggle Inlay [H]ints")
 		end
 	end,
 })
-      -- Diagnostic Config
-      -- See :help vim.diagnostic.Opts
-      vim.diagnostic.config {
-        severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
-        signs = vim.g.have_nerd_font and {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
-          },
-        } or {},
-        virtual_text = {
-          source = 'if_many',
-          spacing = 2,
-          format = function(diagnostic)
-            local diagnostic_message = {
-              [vim.diagnostic.severity.ERROR] = diagnostic.message,
-              [vim.diagnostic.severity.WARN] = diagnostic.message,
-              [vim.diagnostic.severity.INFO] = diagnostic.message,
-              [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-          end,
-        },
-      }
+
+-- Diagnostic Config
+-- See :help vim.diagnostic.Opts
+vim.diagnostic.config({
+	severity_sort = true,
+	float = { border = "rounded", source = "if_many" },
+	underline = { severity = vim.diagnostic.severity.ERROR },
+	signs = vim.g.have_nerd_font and {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "󰅚 ",
+			[vim.diagnostic.severity.WARN] = "󰀪 ",
+			[vim.diagnostic.severity.INFO] = "󰋽 ",
+			[vim.diagnostic.severity.HINT] = "󰌶 ",
+		},
+	} or {},
+	virtual_text = {
+		source = "if_many",
+		spacing = 2,
+		format = function(diagnostic)
+			local diagnostic_message = {
+				[vim.diagnostic.severity.ERROR] = diagnostic.message,
+				[vim.diagnostic.severity.WARN] = diagnostic.message,
+				[vim.diagnostic.severity.INFO] = diagnostic.message,
+				[vim.diagnostic.severity.HINT] = diagnostic.message,
+			}
+			return diagnostic_message[diagnostic.severity]
+		end,
+	},
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 local servers = {
---	clangd = {},
+	clangd = {},
 	cmake = {},
+	-- gopls = {},
+	pylsp = {},
+	-- rust_analyzer = {},
+	-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+	--
+	-- Some languages (like typescript) have entire language plugins that can be useful:
+	--    https://github.com/pmizio/typescript-tools.nvim
+	--
+	-- But for many setups, the LSP (`tsserver`) will work just fine
+	ts_ls = {},
+	angularls = {},
+	html = {},
+	cssls = {},
+	jinja_lsp = {
+		filetypes = { "jinja", "j2", "jinja2", "html" },
+	},
+
 	lua_ls = {
 		-- cmd = {...},
 		-- filetypes = { ...},
@@ -137,11 +170,15 @@ local servers = {
 					callSnippet = "Replace",
 				},
 				-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-				-- diagnostics = { disable = { "missing-fields" } },
+				-- diagnostics = { disable = { 'missing-fields' } },
 			},
 		},
 	},
 }
+ require("mason").setup()
+
+-- You can add other tools here that you want Mason to install
+-- for you, so that they are available from within Neovim.
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
@@ -149,8 +186,8 @@ vim.list_extend(ensure_installed, {
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 require("mason-lspconfig").setup({
-  ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
+	ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+	automatic_installation = false,
 	handlers = {
 		function(server_name)
 			local server = servers[server_name] or {}
@@ -158,8 +195,7 @@ require("mason-lspconfig").setup({
 			-- by the server configuration above. Useful when disabling
 			-- certain features of an LSP (for example, turning off formatting for ts_ls)
 			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-			lspconfig[server_name].setup(server)
+			require("lspconfig")[server_name].setup(server)
 		end,
 	},
 })
-
