@@ -143,21 +143,6 @@ vim.diagnostic.config({
 	},
 })
 
-local lspconfig = require("lspconfig")
-lspconfig.ts_ls.setup({
-	on_attach = on_attach, -- Use your existing on_attach function
-	filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "html" }, --Add html to the file types.
-	init_options = {
-		hostInfo = "nvim-lsp",
-		preferences = {
-			disableInferredTypeProjects = true,
-		},
-		-- This is the crucial part:
-		embeddedLanguages = {
-			html = "javascript", -- Tell ts-ls to treat JS in HTML <script> tags as JS
-		},
-	},
-})
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
