@@ -149,6 +149,7 @@ capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp"
 local servers = {
 	clangd = {},
 	cmake = {},
+	jinja_lsp = {},
 	-- gopls = {},
 	pylsp = {},
 	-- rust_analyzer = {},
@@ -160,9 +161,7 @@ local servers = {
 	-- But for many setups, the LSP (`tsserver`) will work just fine
 	-- ts_ls = {},
 	ts_ls = {},
-	html = {
-		filetypes = { "html", "htmldjango" },
-	},
+	html = {},
 	cssls = {},
 	lua_ls = {
 		-- cmd = {...},
@@ -189,6 +188,10 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 	border = "rounded",
 })
+
+-- Force j2 to use jinja_lsp
+vim.cmd("autocmd BufNewFile,BufRead *.j2 set filetype=jinja")
+vim.cmd("autocmd BufNewFile,BufRead *.jinja set filetype=jinja")
 
 require("mason").setup()
 
