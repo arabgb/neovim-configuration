@@ -33,3 +33,4 @@ require("nvim-treesitter.configs").setup({
 })
 
 vim.cmd("autocmd FileType jinja setlocal filetype=html")
+vim.cmd("autocmd FileType htmldjango setlocal filetype=html")
