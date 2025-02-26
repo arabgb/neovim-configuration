@@ -10,7 +10,7 @@ vim.opt.mouse = "a"
 vim.opt.showmode = false
 -- vim.opt.laststatus = 0
 -- vim.opt.ruler = false
-vim.opt.cmdheight = 0
+vim.opt.cmdheight = 1
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
