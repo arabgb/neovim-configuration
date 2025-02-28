@@ -62,3 +62,4 @@ vim.opt.scrolloff = 10
 vim.opt.encoding = "utf-8"
 vim.opt.arabicshape = true
 vim.opt.termbidi = true
+-- vim.opt.keymap = "arabic"
