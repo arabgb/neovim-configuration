@@ -15,3 +15,6 @@ https://github.com/sharkdp/fd?tab=readme-ov-file#installation
 
 # jinja_lsp require cargo to work
 sudo dnf install cargo # in fedora!
+
+# js-doc require lehre , Go to : ~/.local/share/nvim/lazy/vim-jsdoc then:
+make install

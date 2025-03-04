@@ -160,7 +160,13 @@ local servers = {
 	--
 	-- But for many setups, the LSP (`tsserver`) will work just fine
 	-- ts_ls = {},
-	ts_ls = {},
+	ts_ls = {
+		settings = {
+			implicitProjectConfiguration = {
+				checkJs = true,
+			},
+		},
+	},
 	html = {},
 	cssls = {},
 	lua_ls = {
