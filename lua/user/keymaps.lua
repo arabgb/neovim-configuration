@@ -52,3 +52,6 @@ end, { desc = "Next todo comment" })
 vim.keymap.set("n", "<leader>t[", function()
 	require("todo-comments").jump_prev()
 end, { desc = "Previous todo comment" })
+
+-- Trouble
+vim.keymap.set("n", "<leader>dt", ":Trouble diagnostics<CR>", { desc = "Use trouble to show error in workspace" })

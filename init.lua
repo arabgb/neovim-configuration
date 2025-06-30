@@ -18,4 +18,5 @@ require("user.js-doc")
 -- require("user.conform")
 -- require("user.vim-prettier")
 require("user.nvim-cmp")
+require("user.workspace-diagnostics")
 -- TODO: I LOVE NVIM
