@@ -3,6 +3,10 @@ git clone https://github.com/arabgb/neovim-configuration "${XDG_CONFIG_HOME:-$HO
 
 # install nerd-font for nvim-web-divicons plugin:
 https://github.com/ryanoasis/nerd-fonts
+or to safe your time: use this:
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf
+fc-cache -fv
 
 # Go to ~/.local/share/nvim/lazy/vim-prettier
 Then do: npm install --legacy-peer-deps
