@@ -148,7 +148,7 @@ capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp"
 
 local servers = {
 	clangd = {},
-	cmake = {},
+	-- cmake = {},
 	jinja_lsp = {},
 	-- gopls = {},
 	pylsp = {
