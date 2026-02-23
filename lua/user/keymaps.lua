@@ -55,3 +55,20 @@ end, { desc = "Previous todo comment" })
 
 -- Trouble
 vim.keymap.set("n", "<leader>dt", ":Trouble diagnostics<CR>", { desc = "Use trouble to show error in workspace" })
+
+-- auto complele menu close
+vim.keymap.set("i", "<C-e>", function()
+	if vim.fn.pumvisible() == 1 then
+		return vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, true, true), "n")
+	end
+end, { desc = "Close autocomplete menu" })
+-- برمجة ESC بشكل ذكي
+vim.keymap.set("i", "<Esc>", function()
+	if vim.fn.pumvisible() == 1 then
+		-- إذا القائمة مفتوحة، أغلقها (C-e) وابقَ في وضع Insert
+		return "<C-e>"
+	else
+		-- إذا القائمة مغلقة، اخرج لوضع Normal (استخدمنا termcodes لضمان عمل الزر)
+		return "<Esc>"
+	end
+end, { expr = true, replace_keycodes = true })

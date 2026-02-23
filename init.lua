@@ -39,3 +39,18 @@ local function customize_ui()
 end
 
 -- customize_ui()
+-- للانتقال للمتغير التالي (Forward)
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
+	local ls = require("luasnip")
+	if ls.expand_or_jumpable() then
+		ls.expand_or_jump()
+	end
+end, { silent = true })
+
+-- للرجوع للمتغير السابق (Backward)
+vim.keymap.set({ "i", "s" }, "<C-h>", function()
+	local ls = require("luasnip")
+	if ls.jumpable(-1) then
+		ls.jump(-1)
+	end
+end, { silent = true })
