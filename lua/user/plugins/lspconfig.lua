@@ -88,6 +88,29 @@ return {
         vim.lsp.enable("pyright")
         vim.lsp.enable("lua_ls")
 
+        -- Add these diagnostic configuration options
+        vim.diagnostic.config({
+            -- Show virtual text next to line (displays error message)
+            virtual_text = {
+                prefix = "●", -- Custom icon
+                spacing = 1,
+            },
+            -- Show signs in the sign column (E, W, etc.)
+            signs = true,
+            -- Show floating window when cursor is on error
+            update_in_insert = false,
+            -- Underline the error
+            underline = true,
+            -- Show severity icons
+            severity_sort = true,
+            -- Floating window options
+            float = {
+                border = "rounded",
+                source = true, -- Show source (e.g., pyright)
+                header = "Diagnostic",
+            },
+        })
+
         -- Keybindings (Triggered when an LSP attaches to a buffer)
         vim.api.nvim_create_autocmd("LspAttach", {
             callback = function(ev)

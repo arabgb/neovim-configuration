@@ -20,6 +20,7 @@ return {
                 virt_text_pos = "eol", -- Position at end of line
                 delay = 500,           -- Show after 500ms of inactivity
                 ignore_whitespace = false,
+                priority = 500,
             },
 
             -- ✨ ADD THIS: Show word diff in the sign column
