@@ -94,6 +94,7 @@ return {
             virtual_text = {
                 prefix = "●", -- Custom icon
                 spacing = 1,
+                source = "if_many",
             },
             -- Show signs in the sign column (E, W, etc.)
             signs = true,
