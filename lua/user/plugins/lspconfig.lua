@@ -44,7 +44,6 @@ return {
             ensure_installed = {
                 "stylua",   -- Lua Formatter
                 "prettier", -- JS/TS/CSS/HTML Formatter
-                "black",    -- Python Formatter
             },
         })
 
