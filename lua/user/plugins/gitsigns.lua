@@ -14,11 +14,11 @@ return {
                 untracked = { text = "▎" },
             },
             -- ✨ ADD THIS: Show blame info on current line
-            current_line_blame = true, -- Shows blame info in the cursor line
+            current_line_blame = true,         -- Shows blame info in the cursor line
             current_line_blame_opts = {
-                virt_text = true,      -- Virtual text next to line
-                virt_text_pos = "eol", -- Position at end of line
-                delay = 500,           -- Show after 500ms of inactivity
+                virt_text = true,              -- Virtual text next to line
+                virt_text_pos = "right_align", -- Position at end of line
+                delay = 500,                   -- Show after 500ms of inactivity
                 ignore_whitespace = false,
                 priority = 100,
             },
