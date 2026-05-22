@@ -140,17 +140,8 @@ return {
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)                 -- Show hover info
                 vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)       -- Smart rename
                 vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- Show diagnostic popup
-
-                local client = vim.lsp.get_client_by_id(ev.data.client_id)
-                if client == nil then
-                    return
-                end
-                if client.name == 'ruff' then
-                    -- Disable hover in favor of Pyright
-                    client.server_capabilities.hoverProvider = false
-                end
             end,
-            desc = 'LSP: Disable hover capability from Ruff',
+            desc = 'LSP: Core keymap',
         })
     end,
 }
