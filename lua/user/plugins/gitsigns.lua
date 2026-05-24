@@ -13,26 +13,20 @@ return {
                 changedelete = { text = "▎" },
                 untracked = { text = "▎" },
             },
-            -- ✨ ADD THIS: Show blame info on current line
-            current_line_blame = true,         -- Shows blame info in the cursor line
+            current_line_blame = true,
             current_line_blame_opts = {
-                virt_text = true,              -- Virtual text next to line
-                virt_text_pos = "right_align", -- Position at end of line
-                delay = 500,                   -- Show after 500ms of inactivity
+                virt_text = true,
+                virt_text_pos = "right_align",
+                delay = 500,
                 ignore_whitespace = false,
                 priority = 100,
             },
-
-            -- ✨ ADD THIS: Show word diff in the sign column
-            word_diff = false, -- Set to true if you want word-level diffs
-
-            -- ✨ ADD THIS: Update content on save
+            word_diff = false,
             update_debounce = 100,
-            status_formatter = nil, -- Use default
+            status_formatter = nil,
+            
             -- Keymaps for Git actions
             on_attach = function(bufnr)
-                local gs = package.loaded.gitsigns
-
                 local function map(mode, l, r, opts)
                     opts = opts or {}
                     opts.buffer = bufnr
@@ -45,7 +39,7 @@ return {
                         return "]h"
                     end
                     vim.schedule(function()
-                        gs.next_hunk()
+                        gitsigns.next_hunk() -- 👈 Changed from gs to gitsigns
                     end)
                     return "<Ignore>"
                 end, { expr = true, desc = "Next Git hunk" })
@@ -55,15 +49,15 @@ return {
                         return "[h"
                     end
                     vim.schedule(function()
-                        gs.prev_hunk()
+                        gitsigns.prev_hunk() -- 👈 Changed from gs to gitsigns
                     end)
                     return "<Ignore>"
                 end, { expr = true, desc = "Prev Git hunk" })
 
                 -- Actions
-                map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview Git hunk" })
+                map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "Preview Git hunk" }) -- 👈 Changed gs to gitsigns
                 map("n", "<leader>hb", function()
-                    gs.blame_line({ full = true })
+                    gitsigns.blame_line({ full = true }) -- 👈 Changed gs to gitsigns
                 end, { desc = "Git blame line" })
             end,
         })
