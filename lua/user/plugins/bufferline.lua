@@ -32,6 +32,6 @@ return {
 		keymap.set("n", "<leader>b[", "<cmd>BufferLineCyclePrev<cr>", { desc = "Previous buffer" })
 
 		-- Keymap for closing the current buffer
-		keymap.set("n", "<leader>bx", "<cmd>bdelete<cr>", { desc = "Close current buffer" })
+		-- keymap.set("n", "<leader>bx", "<cmd>bdelete<cr>", { desc = "Close current buffer" })
 	end,
 }
