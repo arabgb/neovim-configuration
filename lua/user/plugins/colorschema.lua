@@ -10,6 +10,8 @@ return {
             })
             -- Set the colorscheme
             vim.cmd([[colorscheme ayu]])
+            -- Change inactive line numbers to a dim, subtle gray
+            vim.api.nvim_set_hl(0, "LineNr", { fg = "#5c6370", bg = "NONE" })
         end,
     },
 }
