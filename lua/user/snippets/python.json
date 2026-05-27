@@ -1,0 +1,23 @@
+{
+  "Create a function": {
+    "prefix": "py-def",
+    "description": "Function template",
+    "body": [
+      "def ${1:new_function}($2) -> ${3:None}:",
+      "    ${4:raise NotImplementedError('$1() was not implemented.')}"
+    ]
+  },
+  "Main entry point": {
+    "prefix": "py-main",
+    "description": "Main entry point template",
+    "body": [
+      "def main() -> None:",
+      "    ${1:...}",
+      "",
+      "",
+      "if __name__ == '__main__':",
+      "    main()",
+      ""
+    ]
+  }
+}

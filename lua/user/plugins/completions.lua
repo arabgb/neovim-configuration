@@ -1,6 +1,8 @@
 return {
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
+	-- event = "InsertEnter",
+	-- Load on these events so snippet engines are completely ready
+	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
 		"hrsh7th/cmp-buffer", -- Buffer source for nvim-cmp
@@ -12,6 +14,11 @@ return {
 	config = function()
 		local cmp = require("cmp")
 		local luasnip = require("luasnip")
+
+		-- Tell Luasnip to load standard Coduim/Zed style JSON snippets
+		require("luasnip.loaders.from_vscode").lazy_load({
+			paths = { vim.fn.stdpath("config") .. "/lua/user/snippets" },
+		})
 
 		-- Integration with autopairs
 		local cmp_autopairs = require("nvim-autopairs.completion.cmp")
@@ -38,9 +45,35 @@ return {
 				["<C-e>"] = cmp.mapping.abort(), -- Close menu
 
 				-- Confirm with Enter
-				["<CR>"] = cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Replace,
-					select = false,
+				-- ["<CR>"] = cmp.mapping.confirm({
+				-- 	behavior = cmp.ConfirmBehavior.Replace,
+				-- 	select = false,
+				-- }),
+
+				-- ["<CR>"] = cmp.mapping(function(fallback)
+				-- 	if cmp.visible() then
+				-- 		if luasnip.expandable() then
+				-- 			luasnip.expand()
+				-- 		else
+				-- 			cmp.confirm({
+				-- 				behavior = cmp.ConfirmBehavior.Replace,
+				-- 				select = false,
+				-- 			})
+				-- 		end
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s" }),
+				-- Confirm autocomplete selection with Enter
+				["<CR>"] = cmp.mapping({
+					i = function(fallback)
+						if cmp.visible() and cmp.get_active_entry() then
+							cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+						else
+							fallback()
+						end
+					end,
+					s = cmp.mapping.confirm({ select = true }),
 				}),
 
 				-- Tab: Jump to next parameter OR select next suggestion
